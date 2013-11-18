@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.motechproject.server.web.controller.Constants.REDIRECT_HOME;
+
 @Controller
 public class BootstrapController {
     public static final String BOOTSTRAP_CONFIG_VIEW = "bootstrapconfig";

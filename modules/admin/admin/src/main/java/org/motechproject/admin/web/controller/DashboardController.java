@@ -49,25 +49,31 @@ public class DashboardController {
         if (startupManager.isConfigRequired()) {
             mav = new ModelAndView("redirect:startup.do");
         } else {
-            mav = new ModelAndView("index");
-            String contextPath = request.getSession().getServletContext().getContextPath();
-
-            if (StringUtils.isNotBlank(contextPath) && !"/".equals(contextPath)) {
-                mav.addObject("contextPath", contextPath.substring(1) + "/");
-            } else if (StringUtils.isBlank(contextPath) || "/".equals(contextPath)) {
-                mav.addObject("contextPath", "");
-            }
-
-            if (moduleName != null) {
-                ModuleRegistrationData currentModule = uiFrameworkService.getModuleData(moduleName);
-                if (currentModule != null) {
-                    mav.addObject("currentModule", currentModule);
-                    mav.addObject("criticalNotification", currentModule.getCriticalMessage());
-                    uiFrameworkService.moduleBackToNormal(moduleName);
-                }
-            }
+            mav = indexPage(moduleName, request);
         }
 
+        return mav;
+    }
+
+    private ModelAndView indexPage(String moduleName, HttpServletRequest request) {
+        ModelAndView mav;
+        mav = new ModelAndView("index");
+        String contextPath = request.getSession().getServletContext().getContextPath();
+
+        if (StringUtils.isNotBlank(contextPath) && !"/".equals(contextPath)) {
+            mav.addObject("contextPath", contextPath.substring(1) + "/");
+        } else if (StringUtils.isBlank(contextPath) || "/".equals(contextPath)) {
+            mav.addObject("contextPath", "");
+        }
+
+        if (moduleName != null) {
+            ModuleRegistrationData currentModule = uiFrameworkService.getModuleData(moduleName);
+            if (currentModule != null) {
+                mav.addObject("currentModule", currentModule);
+                mav.addObject("criticalNotification", currentModule.getCriticalMessage());
+                uiFrameworkService.moduleBackToNormal(moduleName);
+            }
+        }
         return mav;
     }
 

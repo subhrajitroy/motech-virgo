@@ -30,6 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import static org.motechproject.server.web.controller.Constants.REDIRECT_HOME;
+
 @Controller
 public class StartupController {
 
@@ -105,7 +107,7 @@ public class StartupController {
 
                 settings.setLanguage(form.getLanguage());
                 settings.setLoginModeValue(form.getLoginMode());
-                settings.savePlatformSetting(AMQ_BROKER_URL, form.getQueueUrl());
+                settings.savePlatformSetting(MotechSettings.AMQ_BROKER_URL, form.getQueueUrl());
                 settings.setProviderName(form.getProviderName());
                 settings.setProviderUrl(form.getProviderUrl());
 

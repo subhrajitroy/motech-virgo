@@ -5,8 +5,8 @@ import org.apache.velocity.app.VelocityEngine;
 import org.joda.time.format.DateTimeFormat;
 import org.motechproject.admin.domain.StatusMessage;
 import org.motechproject.config.service.ConfigurationService;
-import org.motechproject.email.model.Mail;
-import org.motechproject.email.service.EmailSenderService;
+import org.motechproject.security.domain.Mail;
+import org.motechproject.security.email.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.velocity.VelocityEngineUtils;
@@ -32,14 +32,15 @@ public class EmailNotifier {
     private VelocityEngine velocityEngine;
 
     @Autowired
-    private EmailSenderService emailSender;
+    private EmailSender emailSender;
 
     private static final String CRITICAL_NOTIFICATION_TEMPLATE = "/mail/criticalNotification.vm";
 
     /**
      * Sends a critical notification for a given {@link StatusMessage}.
+     *
      * @param statusMessage The {@link StatusMessage} for which the notification should be generated.
-     * @param recipient The recipient of the notification.
+     * @param recipient     The recipient of the notification.
      */
     public void send(StatusMessage statusMessage, String recipient) {
         Map<String, Object> model = templateParams(statusMessage);

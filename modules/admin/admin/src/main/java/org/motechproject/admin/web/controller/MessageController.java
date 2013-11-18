@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-@Controller
+@Controller("/admin")
 public class MessageController {
 
     @Autowired

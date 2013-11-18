@@ -21,7 +21,7 @@
 </head>
 
 <body ng-controller="MasterCtrl"  ng-class="showDashboardLogo.backgroudUpDown()">
-    <div id="content-header" ng-include="'../server/resources/partials/header.html'"></div>
+    <div id="content-header" ng-include="'resources/partials/header.html'"></div>
 
     <div id="content" class="container-fluid">
         <div class="row-fluid">
@@ -40,6 +40,6 @@
         </div>
     </div>
 
-    <div ng-include="'../server/resources/partials/footer.html'"></div>
+    <div ng-include="'resources/partials/footer.html'"></div>
 </body>
 </html>

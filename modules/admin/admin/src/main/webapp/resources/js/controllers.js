@@ -242,7 +242,7 @@
 
             $http({
                 method: 'POST',
-                url: '../server/bootstrap/verify',
+                url: 'bootstrap/verify',
                 timeout: 8000,
                 data: $('form.bootstrap-config-form').serialize(),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}

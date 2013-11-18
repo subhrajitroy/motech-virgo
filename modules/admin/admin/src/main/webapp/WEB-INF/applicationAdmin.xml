@@ -42,7 +42,7 @@
         <constructor-arg name="moduleName" value="server-bundle"/>
         <constructor-arg name="i18n">
             <map>
-                <entry key="messages" value="../server/resources/messages/"/>
+                <entry key="messages" value="resources/messages/"/>
             </map>
         </constructor-arg>
     </bean>

@@ -24,7 +24,7 @@
     <osgi:reference id="uiFrameworkServiceOsgi" interface="org.motechproject.osgi.web.UIFrameworkService"
                     availability="optional"/>
 
-    <osgi:reference id="mailSender" interface="org.motechproject.email.service.EmailSenderService"/>
+    <!--<osgi:reference id="mailSender" interface="org.motechproject.email.service.EmailSenderService"/>-->
 
     <osgi:reference id="serverLogServiceOsgi" interface="org.motechproject.osgi.web.service.ServerLogService"/>
 
@@ -40,5 +40,10 @@
     <osgi:reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
 
     <!--<osgi:reference id="configurationService" interface="org.motechproject.config.service.ConfigurationService"/>-->
+
+    <!--Security-->
+
+
+    <!--<bean id="rolePermissionRegListener" class="org.motechproject.security.osgi.RolePermissionRegistrationListener"/>-->
 
 </beans>
