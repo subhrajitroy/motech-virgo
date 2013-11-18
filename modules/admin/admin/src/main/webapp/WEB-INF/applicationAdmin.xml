@@ -14,7 +14,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.motechproject.admin"/>
     <context:component-scan base-package="org.motechproject.server.startup"/>
-    <!--<context:component-scan base-package="org.motechproject.server.web"/>-->
+    <context:component-scan base-package="org.motechproject.server.web"/>
     <context:component-scan base-package="org.motechproject.server.ui"/>
 
 

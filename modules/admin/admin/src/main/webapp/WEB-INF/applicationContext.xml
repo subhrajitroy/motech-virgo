@@ -31,7 +31,6 @@
     <!--From Platform Bundle -->
 
 
-
     <osgi:reference id="configLoader" interface="org.motechproject.server.config.service.ConfigLoader"/>
 
     <osgi:reference id="userService" interface="org.motechproject.security.service.MotechUserService"/>
@@ -40,6 +39,6 @@
 
     <osgi:reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
 
-    <osgi:reference id="configurationService" interface="org.motechproject.config.service.ConfigurationService"/>
+    <!--<osgi:reference id="configurationService" interface="org.motechproject.config.service.ConfigurationService"/>-->
 
 </beans>

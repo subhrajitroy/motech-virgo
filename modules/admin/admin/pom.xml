@@ -108,6 +108,10 @@
             <artifactId>com.springsource.com.ctc.wstx</artifactId>
             <version>3.2.8</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>com.springsource.org.apache.commons.validator</artifactId>
+        </dependency>
         <!-- test -->
         <dependency>
             <groupId>org.springframework</groupId>
