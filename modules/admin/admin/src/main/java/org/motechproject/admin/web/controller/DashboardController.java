@@ -3,6 +3,9 @@ package org.motechproject.admin.web.controller;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
+import org.motechproject.osgi.web.ModuleRegistrationData;
+import org.motechproject.osgi.web.UIFrameworkService;
+import org.motechproject.server.startup.StartupManager;
 import org.motechproject.server.ui.LocaleService;
 import org.motechproject.server.web.dto.ModuleMenu;
 import org.motechproject.server.web.form.UserInfo;
@@ -27,6 +30,12 @@ public class DashboardController {
 
 
     @Autowired
+    private StartupManager startupManager;
+
+    @Autowired
+    private UIFrameworkService uiFrameworkService;
+
+    @Autowired
     private LocaleService localeService;
 
     @Autowired
@@ -34,18 +43,33 @@ public class DashboardController {
 
     @RequestMapping({"/index", "/", "/home"})
     public ModelAndView index(@RequestParam(required = false) String moduleName, final HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("index");
-        String contextPath = request.getSession().getServletContext().getContextPath();
+        ModelAndView mav;
 
-        if (StringUtils.isNotBlank(contextPath) && !"/".equals(contextPath)) {
-            mav.addObject("contextPath", contextPath.substring(1) + "/");
-        } else if (StringUtils.isBlank(contextPath) || "/".equals(contextPath)) {
-            mav.addObject("contextPath", "");
+        // check if this is the first run
+        if (startupManager.isConfigRequired()) {
+            mav = new ModelAndView("redirect:startup.do");
+        } else {
+            mav = new ModelAndView("index");
+            String contextPath = request.getSession().getServletContext().getContextPath();
+
+            if (StringUtils.isNotBlank(contextPath) && !"/".equals(contextPath)) {
+                mav.addObject("contextPath", contextPath.substring(1) + "/");
+            } else if (StringUtils.isBlank(contextPath) || "/".equals(contextPath)) {
+                mav.addObject("contextPath", "");
+            }
+
+            if (moduleName != null) {
+                ModuleRegistrationData currentModule = uiFrameworkService.getModuleData(moduleName);
+                if (currentModule != null) {
+                    mav.addObject("currentModule", currentModule);
+                    mav.addObject("criticalNotification", currentModule.getCriticalMessage());
+                    uiFrameworkService.moduleBackToNormal(moduleName);
+                }
+            }
         }
 
         return mav;
     }
-
 
     @RequestMapping(value = "/modulemenu", method = RequestMethod.GET)
     @ResponseBody
