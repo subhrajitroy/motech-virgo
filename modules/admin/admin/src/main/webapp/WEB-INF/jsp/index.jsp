@@ -26,7 +26,7 @@
 
 <body ng-controller="MasterCtrl"  ng-class="showDashboardLogo.backgroudUpDown()">
 <div class="bodywrap">
-    <div ng-show="ready" id="content-header" ng-include="'../server/resources/partials/header.html'"></div>
+    <div ng-show="ready" id="content-header" ng-include="'resources/partials/header.html'"></div>
 
     <div id="content" class="container-fluid" ng-controller="HomeCtrl">
         <div class="row-fluid">
@@ -38,7 +38,7 @@
                         <div class="splash" ng-hide="ready">
                             <div class="splash-logo"></div>
                             <div class="clearfix"></div>
-                            <div class="splash-loader"><img src="../server/resources/img/loader.gif" alt="loading" /></div>
+                            <div class="splash-loader"><img src="resources/img/loader.gif" alt="loading" /></div>
                             <div class="clearfix"></div>
                             <div class="splash-msg">{{msg('server.module.loading')}}</div>
                             <div class="clearfix"></div>
@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div ng-show="ready" ng-include="'../server/resources/partials/footer.html'"></div>
+    <div ng-show="ready" ng-include="'resources/partials/footer.html'"></div>
 
 </div>
 </body>

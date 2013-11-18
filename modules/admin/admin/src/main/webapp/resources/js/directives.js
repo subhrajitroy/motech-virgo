@@ -83,7 +83,7 @@
             replace : true,
             transclude: true,
             compile: function (tElement, tAttrs, scope) {
-                var url = '/resources/partials/motech-modules.html',
+                var url = 'resources/partials/motech-modules.html',
 
                 templateLoader = $http.get(url, {cache: $templateCache})
                     .success(function (html) {
