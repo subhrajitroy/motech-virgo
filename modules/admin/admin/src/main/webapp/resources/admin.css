@@ -93,7 +93,7 @@ h4.settings-section {
 .action {
     width: 31px;
     height: 25px;
-    background:url("../img/action-btn-sprite.png") no-repeat;
+    background:url("img/action-btn-sprite.png") no-repeat;
 }
 
 .action-start {

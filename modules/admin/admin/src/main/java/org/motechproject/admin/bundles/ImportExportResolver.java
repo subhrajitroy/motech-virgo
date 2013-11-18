@@ -6,6 +6,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.packageadmin.ExportedPackage;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,10 +17,11 @@ import java.util.List;
  * objects with additional information regarding {@link Bundle}'s imports and exports. This information gives
  * better insight into the current state of the OSGi framework.
  */
-@Component
+//@Component
 public class ImportExportResolver {
 
     @Autowired
+    @Qualifier("packageAdmin")
     private PackageAdmin packageAdmin;
 
     @Autowired

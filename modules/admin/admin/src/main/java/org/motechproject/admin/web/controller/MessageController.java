@@ -28,7 +28,8 @@ public class MessageController {
     private UIFrameworkService uiFrameworkService;
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
-    @ResponseBody public List<StatusMessage> getMessages(@RequestParam(defaultValue = "false") boolean all) {
+    @ResponseBody
+    public List<StatusMessage> getMessages(@RequestParam(defaultValue = "false") boolean all) {
         uiFrameworkService.moduleBackToNormal("admin", "admin.messages");
         return (all ? statusMessageService.getAllMessages() : statusMessageService.getActiveMessages());
     }
@@ -46,7 +47,8 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/messages/rules", method = RequestMethod.GET)
-    @ResponseBody public List<NotificationRule> getNotificationRules() {
+    @ResponseBody
+    public List<NotificationRule> getNotificationRules() {
         return statusMessageService.getNotificationRules();
     }
 

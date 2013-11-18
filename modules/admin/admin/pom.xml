@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>motech</artifactId>
         <groupId>org.motechproject</groupId>
@@ -13,7 +14,7 @@
     <version>0.22-SNAPSHOT</version>
 
     <name>MOTECH Admin</name>
-    <packaging>bundle</packaging>
+    <packaging>war</packaging>
     <description>MOTECH Admin User Interface</description>
 
 
@@ -97,6 +98,16 @@
             <groupId>javax.validation</groupId>
             <artifactId>com.springsource.javax.validation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.xerces</groupId>
+            <artifactId>com.springsource.org.apache.xerces</artifactId>
+            <version>2.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.woodstox</groupId>
+            <artifactId>com.springsource.com.ctc.wstx</artifactId>
+            <version>3.2.8</version>
+        </dependency>
         <!-- test -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -126,228 +137,28 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>IT</id>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <!-- Pre Integration -->
-                            <execution>
-                                <id>Pre IT - Drop Admin DB</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-admin" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Drop Web Security DB</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Create Web Security DB</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-X" />
-                                            <arg value="PUT" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Create Admin User</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <!-- Login/Password: motech/motech -->
-                                        <exec executable="curl">
-                                            <arg value="-X" />
-                                            <arg value="POST" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                            <arg value="-d" />
-                                            <arg value="@${modules.root.dir}/testdata/adminuser.json" />
-                                            <arg value="-H" />
-                                            <arg value="Content-Type: application/json" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <!-- Post Integration -->
-                            <execution>
-                                <id>Post IT - Drop Admin DB</id>
-                                <phase>post-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-admin" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Post IT - Drop Web Security DB</id>
-                                <phase>post-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <version>2.6</version>
-                        <executions>
-                            <execution>
-                                <id>copy-resources</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${user.home}/.motech/config</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>../../../platform/server/src/test/resources</directory>
-                                            <include>motech-settings.conf</include>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <version>2.5</version>
-                        <inherited>false</inherited>
-                        <executions>
-                            <execution>
-                                <id>clean-config</id>
-                                <goals>
-                                    <goal>clean</goal>
-                                </goals>
-                                <phase>post-integration-test</phase>
-                                <configuration>
-                                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                                    <filesets>
-                                        <fileset>
-                                            <directory>${user.home}/.motech/config</directory>
-                                            <includes>
-                                                <include>motech-settings.conf</include>
-                                            </includes>
-                                            <followSymlinks>false</followSymlinks>
-                                        </fileset>
-                                    </filesets>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <build>
+        <finalName>motech-admin</finalName>
         <plugins>
             <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>2.5</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
                 <executions>
                     <execution>
-                        <id>clean-config</id>
+                        <id>copy-osgi-dependencies</id>
                         <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <phase>clean</phase>
-                        <configuration>
-                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                            <filesets>
-                                <fileset>
-                                    <directory>${user.home}/.motech/config/org.motechproject.motech-admin-bundle</directory>
-                                    <includes>
-                                        <include>**/*</include>
-                                    </includes>
-                                    <followSymlinks>false</followSymlinks>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jslint-maven-plugin</artifactId>
-                <version>1.0.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jslint</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <sourceJsFolder>${basedir}/src/main/resources/webapp/js</sourceJsFolder>
-                            <disallowIncrAndDecr>true</disallowIncrAndDecr>
-                            <requireUseStrict>true</requireUseStrict>
-                            <predefinedVars>
-                                $, jQuery, angular, angularHandler, jFormErrorHandler,
-                                dummyHandler, jConfirm, alertHandler, window, alertHandlerWithCallback, module,
-                                blockUI, unblockUI, motechAlert, handleWithStackTrace, restartBundleHandler, parseUri
-                            </predefinedVars>
-                            <failOnIssues>${jslint.enable}</failOnIssues>
+                            <excludeArtifactIds>org.apache.felix.framework,org.apache.felix.http.proxy</excludeArtifactIds>
+                            <includeScope>compile</includeScope>
+                            <includeScope>provided</includeScope>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <overWriteReleases>false</overWriteReleases>
+                            <outputDirectory>
+                                ${user.home}/.motech/bundles
+                            </outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -357,15 +168,35 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>2.3.4</version>
                 <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <supportedProjectTypes>
+                        <supportedProjectType>war</supportedProjectType>
+                    </supportedProjectTypes>
                     <instructions>
-                        <Context-Path>admin/api</Context-Path>
-                        <Context-File>META-INF/servlet/applicationAdminUIBundle.xml</Context-File>
-                        <Resource-Path>admin</Resource-Path>
-                        <Blueprint-Enabled>true</Blueprint-Enabled>
+                        <Bundle-Name>motech-admin</Bundle-Name>
+                        <Bundle-SymbolicName>motech-admin</Bundle-SymbolicName>
+                        <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
+                        <Web-ContextPath>/motech</Web-ContextPath>
+                        <Export-Package>*!</Export-Package>
+                        <Import-Library>org.springframework.spring;version="[3.0, 3.5)"</Import-Library>
                         <Import-Package>
+                            org.eclipse.virgo.web.dm,
+                            net.sf.cglib.proxy,
+                            net.sf.cglib.core,
+                            net.sf.cglib.reflect,
+                            org.eclipse.virgo.snaps.core,
                             org.aopalliance.aop,
                             org.apache.commons.fileupload,
+                            org.apache.xerces.jaxp,
                             org.ektorp.impl,
                             org.ektorp.spring,
                             org.ektorp.support,
@@ -392,166 +223,61 @@
                             org.springframework.web.servlet.support,
                             org.eclipse.gemini.blueprint.config,
                             org.springframework.security.config,
-                            net.sf.cglib.proxy,
-                            net.sf.cglib.core,
+                            javax.servlet.jsp,
+                            javax.servlet.jsp.tagext,
+                            javax.servlet.jsp.jstl.core,
+                            javax.servlet.jsp.jstl.fmt,
+                            javax.servlet.jsp.jstl.sql,
+                            javax.servlet.jsp.jstl.tlv,
+                            org.apache.taglibs.standard,
+                            org.apache.taglibs.standard.extra.spath,
+                            org.apache.taglibs.standard.functions,
+                            org.apache.taglibs.standard.lang.jstl,
+                            org.apache.taglibs.standard.lang.jstl.parser,
+                            org.apache.taglibs.standard.lang.jstl.test,
+                            org.apache.taglibs.standard.lang.jstl.test.beans,
+                            org.apache.taglibs.standard.lang.support,
+                            org.apache.taglibs.standard.resources,
+                            org.apache.taglibs.standard.tag.common.core,
+                            org.apache.taglibs.standard.tag.common.fmt,
+                            org.apache.taglibs.standard.tag.common.sql,
+                            org.apache.taglibs.standard.tag.common.xml,
+                            org.apache.taglibs.standard.tag.el.core,
+                            org.apache.taglibs.standard.tag.el.fmt,
+                            org.apache.taglibs.standard.tag.el.sql,
+                            org.apache.taglibs.standard.tag.el.xml,
+                            org.apache.taglibs.standard.tag.rt.core,
+                            org.apache.taglibs.standard.tag.rt.fmt,
+                            org.apache.taglibs.standard.tag.rt.sql,
+                            org.apache.taglibs.standard.tag.rt.xml,
+                            org.apache.taglibs.standard.tei,
+                            org.apache.taglibs.standard.tlv,
                             *
                         </Import-Package>
-                        <Export-Package>
-                            org.motechproject.admin.service;version=${project.version},
-                            org.motechproject.admin.domain;version=${project.version},
-                            org.motechproject.admin.messages;version=${project.version},
-                            org.motechproject.admin.listener;version=${project.version}
-                        </Export-Package>
                     </instructions>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <executions>
-                    <execution>
-                        <id>copy-bundles</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${user.home}/.motech/bundles</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>target</directory>
-                                    <includes>
-                                        <include>*.jar</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-rules</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${user.home}/.motech/rules</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources/rules</directory>
-                                    <includes>
-                                        <include>*.drl</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-module-js</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/js</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources/webapp/js</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-platform-js</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/js/core</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/main/resources/webapp/lib</directory>
-                                </resource>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/main/resources/webapp/js</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-jasmine-spec-lib</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/spec/lib</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/main/resources/webapp/lib/angular</directory>
-                                    <includes>
-                                        <inlude>angular.min.js</inlude>
-                                    </includes>
-                                </resource>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/test/resources/lib</directory>
-                                    <includes>
-                                        <include>angular-mocks.js</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-jasmine-spec</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/spec/spec</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/test/resources/jasmine</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.github.searls</groupId>
-                <artifactId>jasmine-maven-plugin</artifactId>
-                <version>1.3.1.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <skipTests>${maven.test.skip}</skipTests>
-                    <serverPort>${jasmine.server.port}</serverPort>
-
-                    <jsSrcDir>${project.build.directory}/jasmine</jsSrcDir>
-                    <sourceIncludes>
-                        <include>js/core/angular/angular.min.js</include>
-                        <include>js/core/angular/angular-resource.min.js</include>
-                        <include>js/core/jquery/jquery.js</include>
-                        <include>js/core/**/*.js</include>
-                        <include>js/*.js</include>
-                    </sourceIncludes>
-
-                    <jsTestSrcDir>${project.build.directory}/jasmine/spec</jsTestSrcDir>
-                    <specIncludes>
-                        <include>lib/*.js</include>
-                        <include>spec/*.js</include>
-                    </specIncludes>
+                    <packagingExcludes>
+                        WEB-INF/lib/,
+                        WEB-INF/classes/META-INF/
+                    </packagingExcludes>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                 </configuration>
             </plugin>
         </plugins>

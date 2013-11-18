@@ -76,8 +76,8 @@ public class ModuleAdminServiceImpl implements ModuleAdminService {
     @Autowired
     private BundleDirectoryManager bundleDirectoryManager;
 
-    @Autowired
-    private ImportExportResolver importExportResolver;
+//    @Autowired
+//    private ImportExportResolver importExportResolver;
 
     @Autowired
     private MotechBundleFilter motechBundleFilter;
@@ -120,7 +120,7 @@ public class ModuleAdminServiceImpl implements ModuleAdminService {
     public BundleInformation stopBundle(long bundleId) throws BundleException {
         Bundle bundle = getBundle(bundleId);
         bundle.stop();
-        importExportResolver.refreshPackage(bundle);
+//        importExportResolver.refreshPackage(bundle);
         return new BundleInformation(bundle);
     }
 
@@ -146,7 +146,7 @@ public class ModuleAdminServiceImpl implements ModuleAdminService {
 
         try {
             boolean deleted = bundleDirectoryManager.removeBundle(bundle);
-            importExportResolver.refreshPackage(bundle);
+//            importExportResolver.refreshPackage(bundle);
             if (!deleted) {
                 LOG.warn("Failed to delete bundle file: " + bundle.getLocation());
             }
@@ -245,7 +245,7 @@ public class ModuleAdminServiceImpl implements ModuleAdminService {
         Bundle bundle = getBundle(bundleId);
 
         ExtendedBundleInformation bundleInfo = new ExtendedBundleInformation(bundle);
-        importExportResolver.resolveBundleWiring(bundleInfo);
+//        importExportResolver.resolveBundleWiring(bundleInfo);
 
         return bundleInfo;
     }

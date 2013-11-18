@@ -1,1 +1,3 @@
-<% response.sendRedirect("module/server/"); %>
+<%--<% response.sendRedirect("module/server/"); %>--%>
+
+MOTECH PAGE

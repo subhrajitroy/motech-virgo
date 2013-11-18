@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -139,13 +140,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>motech-platform-server-bundle</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>motech-platform-commons-api</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -165,6 +166,7 @@
             <version>1.5.3</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>motech-platform-server</finalName>
         <plugins>
@@ -179,7 +181,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <excludeArtifactIds>org.osgi.core,jstl,servlet-api,org.apache.felix.framework,org.apache.felix.http.proxy</excludeArtifactIds>
+                            <excludeArtifactIds>org.apache.felix.framework,org.apache.felix.http.proxy</excludeArtifactIds>
                             <includeScope>provided</includeScope>
                             <includeScope>compile</includeScope>
                             <overWriteIfNewer>true</overWriteIfNewer>
@@ -191,423 +193,70 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.3.4</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                    </archive>
-                    <webResources>
-                        <resource>
-                            <directory>.</directory>
-                            <targetPath>META-INF</targetPath>
-                            <includes>
-                                <include>LICENSE</include>
-                                <include>NOTICE</include>
-                            </includes>
-                        </resource>
-                    </webResources>
+                    <supportedProjectTypes>
+                        <supportedProjectType>war</supportedProjectType>
+                    </supportedProjectTypes>
+                    <instructions>
+                        <Bundle-Name>motech-platform-server</Bundle-Name>
+                        <Bundle-SymbolicName>motech-platform-server</Bundle-SymbolicName>
+                        <Embed-Directory>WEB-INF/lib</Embed-Directory>
+                        <Bundle-ClassPath>.,WEB-INF/classes,WEB-INF/lib</Bundle-ClassPath>
+                        <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>
+                        <Web-ContextPath>/motech</Web-ContextPath>
+                        <Export-Package>!*</Export-Package>
+                        <Import-Library>org.springframework.spring;version="[3.0, 3.5)"</Import-Library>
+                        <Import-Package>
+                            org.eclipse.virgo.web.dm,
+                            net.sf.cglib.proxy,
+                            net.sf.cglib.core,
+                            net.sf.cglib.reflect,
+                            org.apache.commons.dbcp,
+                            com.mysql.jdbc,
+                            org.eclipse.virgo.snaps.core,
+                            *
+                        </Import-Package>
+                    </instructions>
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>2.5</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>clean-bundles</id>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>${user.home}/.motech/bundles</directory>
-                                    <includes>
-                                        <include>**/*.jar</include>
-                                    </includes>
-                                    <followSymlinks>false</followSymlinks>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>clean-config</id>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <phase>clean</phase>
-                        <configuration>
-                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                            <filesets>
-                                <fileset>
-                                    <directory>${user.home}/.motech/config</directory>
-                                    <includes>
-                                        <include>*.properties</include>
-                                        <include>*.conf</include>
-                                        <include>org.*/**/*</include>
-                                    </includes>
-                                    <followSymlinks>false</followSymlinks>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <packagingExcludes>
+                        WEB-INF/classes/META-INF/
+                    </packagingExcludes>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>IT</id>
-            <dependencies>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>motech-admin</artifactId>
-                    <version>${project.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>motech-event-logging</artifactId>
-                    <version>${project.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>motech-event-aggregation</artifactId>
-                    <version>${project.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>motech-rules-api-bundle</artifactId>
-                    <version>${project.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>motech-platform-server-bundle</artifactId>
-                    <version>${project.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <!-- Pre Integration -->
-                            <execution>
-                                <id>Pre IT - Drop Web Security DB</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Drop Platform Startup DB</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-platform-startup" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Create Web Security DB</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-X" />
-                                            <arg value="PUT" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Create Startup DB</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-X" />
-                                            <arg value="PUT" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-platform-startup" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Create Admin User</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <!-- Login/Password: motech/motech -->
-                                        <exec executable="curl">
-                                            <arg value="-X" />
-                                            <arg value="POST" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                            <arg value="-d" />
-                                            <arg value="@${modules.root.dir}/testdata/adminuser.json" />
-                                            <arg value="-H" />
-                                            <arg value="Content-Type: application/json" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Pre IT - Create Settings</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-X" />
-                                            <arg value="POST" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-platform-startup" />
-                                            <arg value="-d" />
-                                            <arg value="@src/test/resources/settings.json" />
-                                            <arg value="-H" />
-                                            <arg value="Content-Type: application/json" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <!-- Post Integration -->
-                            <execution>
-                                <id>Post IT - Drop Web Security DB</id>
-                                <phase>post-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-web-security" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>Post IT - Drop Platform Startup</id>
-                                <phase>post-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-platform-startup" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>POST IT - check if tomcat is stopped</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>${basedir}/tomcat-shutdown.sh</executable>
-                                    <workingDirectory>${basedir}</workingDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.googlecode.t7mp</groupId>
-                        <artifactId>maven-t7-plugin</artifactId>
-                        <version>0.9.10.M8</version>
-                        <configuration>
-                            <tomcatHttpPort>${tomcat.port}</tomcatHttpPort>
-                            <tomcatShutdownPort>${tomcat.shutdown.port}</tomcatShutdownPort>
-                            <tomcatShutdownCommand>SHUTDOWN</tomcatShutdownCommand>
-                            <tomcatSetAwait>false</tomcatSetAwait>
-                            <tomcatVersion>7.0.29</tomcatVersion>
-                            <lookInside>false</lookInside>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>tomcat-start</id>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <phase>pre-integration-test</phase>
-                            </execution>
-                            <execution>
-                                <id>tomcat-stop</id>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                                <phase>post-integration-test</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <version>2.6</version>
-                        <executions>
-                            <execution>
-                                <id>copy-resources</id>
-                                <phase>initialize</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${user.home}/.motech/config</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>src/test/resources</directory>
-                                            <include>motech-settings.conf</include>
-                                            <include>bootstrap.properties</include>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>copy-config-locations-file</id>
-                                <phase>initialize</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${user.home}/.motech</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>src/test/resources</directory>
-                                            <filtering>true</filtering>
-                                            <includes>
-                                                <include>config-locations.properties</include>
-                                            </includes>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <version>2.5</version>
-                        <inherited>false</inherited>
-                        <executions>
-                            <execution>
-                                <id>clean-config</id>
-                                <goals>
-                                    <goal>clean</goal>
-                                </goals>
-                                <phase>post-integration-test</phase>
-                                <configuration>
-                                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                                    <filesets>
-                                        <fileset>
-                                            <directory>${user.home}/.motech/config</directory>
-                                            <includes>
-                                                <include>motech-settings.conf</include>
-                                                <include>bootstrap.properties</include>
-                                            </includes>
-                                            <followSymlinks>false</followSymlinks>
-                                        </fileset>
-                                        <fileset>
-                                            <directory>${user.home}/.motech</directory>
-                                            <includes>
-                                                <include>config-locations.properties</include>
-                                            </includes>
-                                            <followSymlinks>false</followSymlinks>
-                                        </fileset>
-                                    </filesets>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>copy-config</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <version>2.5</version>
-                        <executions>
-                            <execution>
-                                <id>copy-motech-settings-file</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${user.home}/.motech/config</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>../server-config/src/main/config</directory>
-                                            <includes>
-                                                <include>motech-settings.conf</include>
-                                            </includes>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+
 </project>
