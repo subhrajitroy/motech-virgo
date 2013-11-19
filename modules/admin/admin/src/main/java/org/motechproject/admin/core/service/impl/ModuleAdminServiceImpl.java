@@ -53,6 +53,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -94,7 +95,9 @@ public class ModuleAdminServiceImpl implements ModuleAdminService {
     public List<BundleInformation> getBundles() {
         List<BundleInformation> bundles = new ArrayList<>();
 
-        List<Bundle> motechBundles = motechBundleFilter.filter(bundleContext.getBundles());
+//        List<Bundle> motechBundles = motechBundleFilter.filter(bundleContext.getBundles());
+
+        List<Bundle> motechBundles = Arrays.asList(bundleContext.getBundles());
 
         for (Bundle bundle : motechBundles) {
             BundleInformation bundleInformation = new BundleInformation(bundle);

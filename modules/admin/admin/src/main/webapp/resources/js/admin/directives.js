@@ -129,7 +129,7 @@
 
                         timeoutHnd = setTimeout(function () {
                             jQuery('#' + attrs.jqgridSearch).jqGrid('setGridParam', {
-                                url: '../admin/api/jobs' + params
+                                url: 'jobs' + params
                             }).trigger('reloadGrid');
                         }, time || 0);
                     };

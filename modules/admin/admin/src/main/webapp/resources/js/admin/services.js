@@ -4,7 +4,7 @@
     /* Services */
 
     angular.module('bundleServices', ['ngResource']).factory('Bundle', function ($resource) {
-        return $resource('admin/api/bundles/:bundleId/:action', {bundleId: '@bundleId'}, {
+        return $resource('bundles/:bundleId/:action', {bundleId: '@bundleId'}, {
             start: {method: 'POST', params: {action: 'start'}},
             stop: {method: 'POST', params: {action: 'stop'}},
             restart: {method: 'POST', params: {action: 'restart'}},
@@ -14,27 +14,27 @@
     });
 
     angular.module('messageServices', ['ngResource']).factory('StatusMessage', function ($resource) {
-        return $resource('admin/api/messages');
+        return $resource('messages');
     });
 
     angular.module('notificationRuleServices', ['ngResource']).factory('NotificationRule', function ($resource) {
-        return $resource('admin/api/messages/rules/:ruleId', {ruleId: '@_id'});
+        return $resource('messages/rules/:ruleId', {ruleId: '@_id'});
     });
 
     angular.module('notificationRuleDtoServices', ['ngResource']).factory('NotificationRuleDto', function ($resource) {
-        return $resource('admin/api/messages/rules/dto');
+        return $resource('messages/rules/dto');
     });
 
     angular.module('configurationServices', ['ngResource']).factory('PlatformSettings', function ($resource) {
-        return $resource('admin/api/settings/platform');
+        return $resource('settings/platform');
     });
 
     angular.module('moduleSettingsServices', ['ngResource']).factory('ModuleSettings', function ($resource) {
-        return $resource('admin/api/settings/:bundleId');
+        return $resource('settings/:bundleId');
     });
 
     angular.module('logService', ['ngResource']).factory('LogService', function ($resource) {
-        return $resource('admin/api/log/level');
+        return $resource('log/level');
     });
 
 }());

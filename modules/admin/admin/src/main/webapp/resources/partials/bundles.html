@@ -23,7 +23,7 @@
     </div>
 
     <div class="inside inline top-line">
-        <form id="bundleUploadForm" action="../admin/api/bundles/upload" enctype="multipart/form-data" method="POST">
+        <form id="bundleUploadForm" action="bundles/upload" enctype="multipart/form-data" method="POST">
             <div class="form-inline">
                 <div class="fileupload fileupload-new" data-provides="fileupload">
                     <span><b>{{msg('admin.bundles.upload')}} {{msg('admin.import.from')}} </b></span>
@@ -93,7 +93,7 @@
             <td>{{bundle.bundleId}}</td>
             <td>
                 <div ng-class="getIconClass(bundle)">
-                    <img ng-src="../admin/api/bundles/{{bundle.bundleId}}/icon" class="small-icon"/>
+                    <img ng-src="bundles/{{bundle.bundleId}}/icon" class="small-icon"/>
                 </div>
             </td>
             <td><a ng-href="#/bundle/{{bundle.bundleId}}">{{bundle.name | moduleName }}</a></td>

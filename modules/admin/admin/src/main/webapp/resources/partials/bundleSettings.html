@@ -32,7 +32,7 @@
         <div class="" ng-repeat="rawFile in rawFiles">
             <h4 class="settings-section">{{rawFile}}</h4>
             <div class="clearfix">
-                <form class="form-horizontal inside" id="_raw_{{rawFile}}" action="../admin/api/settings/{{module.bundleId}}/raw"
+                <form class="form-horizontal inside" id="_raw_{{rawFile}}" action="settings/{{module.bundleId}}/raw"
                       method="post" enctype="multipart/form-data">
                     <div class="control-group fileupload fileupload-new" data-provides="fileupload">
                         <label class="control-label">{{msg('info.fileChosen')}}</label>

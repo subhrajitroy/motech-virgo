@@ -36,7 +36,7 @@
             response = [ infoMsg, errorMsg ];
 
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('../admin/api/messages').
+            $httpBackend.expectGET('messages').
             respond(response);
 
             scope = $rootScope.$new();

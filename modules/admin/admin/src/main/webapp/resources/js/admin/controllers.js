@@ -20,7 +20,7 @@
         };
 
         $scope.bundlesWithSettings = [];
-        $http({method:'GET', url:'../admin/api/settings/bundles/list'}).
+        $http({method:'GET', url:'settings/bundles/list'}).
             success(function (data) {
                 $scope.bundlesWithSettings = data;
             });
@@ -370,7 +370,7 @@
 
         $scope.saveSettings = function (settings) {
             blockUI();
-            $http.post('../admin/api/settings/platform', settings).
+            $http.post('settings/platform', settings).
                 success(alertHandler('admin.settings.saved', 'admin.success')).
                 error(alertHandler('admin.settings.error.location'));
         };
@@ -395,22 +395,22 @@
         };
 
         $scope.uploadFileLocation = function () {
-            $http({method:'POST', url:'../admin/api/settings/platform/location', params:{location:this.location}}).
+            $http({method:'POST', url:'settings/platform/location', params:{location:this.location}}).
                 success(alertHandler('admin.settings.saved', 'admin.success')).
                 error(alertHandler('admin.settings.error.location'));
         };
 
         $scope.saveAll = function () {
             blockUI();
-            $http.post('../admin/api/settings/platform/list', $scope.platformSettings.settingsList).
+            $http.post('platform/list', $scope.platformSettings.settingsList).
                 success(alertHandler('admin.settings.saved', 'admin.success')).
                 error(alertHandler('admin.settings.error.location'));
         };
 
         $scope.exportConfig = function () {
-            $http.get('../admin/api/settings/platform/export').
+            $http.get('platform/export').
             success(function () {
-                window.location.replace("../admin/api/settings/platform/export");
+                window.location.replace("platform/export");
             }).
             error(alertHandler('admin.settings.error.export', 'admin.error'));
         };
@@ -423,7 +423,7 @@
     adminModule.controller('BundleSettingsCtrl', function($scope, Bundle, ModuleSettings, $routeParams, $http) {
         $scope.moduleSettings = ModuleSettings.query({ bundleId:$routeParams.bundleId });
 
-        $http.get('../admin/api/settings/' + $routeParams.bundleId + '/raw').success(function (data) {
+        $http.get('settings/' + $routeParams.bundleId + '/raw').success(function (data) {
             $scope.rawFiles = data;
         });
 
@@ -470,7 +470,7 @@
     adminModule.controller('ServerLogCtrl', function($scope, $http) {
         $scope.refresh = function () {
             blockUI();
-            $http({method:'GET', url:'../admin/api/log'}).
+            $http({method:'GET', url:'log'}).
                 success(
                 function (data) {
                     if (data === 'server.tomcat.error.logFileNotFound') {
@@ -635,7 +635,7 @@
 
         $scope.dataAvailable = true;
 
-        $http.get('../admin/api/queues/').success(function (data) {
+        $http.get('queues/').success(function (data) {
             $scope.queues = data;
         }).error(function () {
                 $scope.dataAvailable = false;
@@ -649,7 +649,7 @@
 
         $scope.dataAvailable = true;
 
-        $http.get('../admin/api/queues/browse?queueName=' + queue).success(function (data) {
+        $http.get('queues/browse?queueName=' + queue).success(function (data) {
             $scope.messages = data;
         }).error(function () {
                 $scope.dataAvailable = false;

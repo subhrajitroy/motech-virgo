@@ -22,7 +22,7 @@ public interface ModuleAdminService {
      * be hidden from this view.
      * @return a list of {@link BundleInformation} objects representing Motech modules in the system.
      */
-    @PreAuthorize("hasRole('manageBundles')")
+//    @PreAuthorize("hasRole('manageBundles')")
     List<BundleInformation> getBundles();
 
     /**
