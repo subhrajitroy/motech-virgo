@@ -66,26 +66,26 @@
         <thead>
         <tr>
             <th ng-click="setOrder('bundleId')">
-                <img src=../admin/img/trans.gif alt="{{msg('admin.bundles.sortingId')}}" title="{{msg('admin.bundles.sortingId')}}"
+                <img src=resources/img/trans.gif alt="{{msg('admin.bundles.sortingId')}}" title="{{msg('admin.bundles.sortingId')}}"
                      ng-class="getSortClass('bundleId')" class="sorting-no"/>{{msg('admin.bundles.id')}}
             </th>
-            <th><img src='../admin/img/trans.gif' class="sorting-no-img"/>{{msg('admin.bundles.icon')}}</th>
+            <th><img src='resources/img/trans.gif' class="sorting-no-img"/>{{msg('admin.bundles.icon')}}</th>
             <th ng-click="setOrder('name')">
-                <img src=../admin/img/trans.gif alt="{{msg('admin.bundles.sortingName')}}"
+                <img src=resources/img/trans.gif alt="{{msg('admin.bundles.sortingName')}}"
                      title="{{msg('admin.bundles.sortingName')}}"
                      ng-class="getSortClass('name')" class="sorting-no"/>{{msg('admin.bundles.name')}}
             </th>
             <th ng-click="setOrder(versionOrder)">
-                <img src='../admin/img/trans.gif' alt="{{msg('admin.bundles.sortingVersion')}}"
+                <img src='resources/img/trans.gif' alt="{{msg('admin.bundles.sortingVersion')}}"
                      title="{{msg('admin.bundles.sortingVersion')}}"
                      ng-class="getSortClass(versionOrder)" class="sorting-no"/>{{msg('admin.bundles.version')}}
             </th>
             <th ng-click="setOrder('state')">
-                <img src='../admin/img/trans.gif' alt="{{msg('admin.bundles.sortingState')}}"
+                <img src='resources/img/trans.gif' alt="{{msg('admin.bundles.sortingState')}}"
                      title="{{msg('admin.bundles.sortingState')}}"
                      ng-class="getSortClass('state')" class="sorting-no"/>{{msg('admin.bundles.state')}}
             </th>
-            <th><img src='../admin/img/trans.gif' class="sorting-no-img"/>{{msg('admin.bundles.actions')}}</th>
+            <th><img src='resources/img/trans.gif' class="sorting-no-img"/>{{msg('admin.bundles.actions')}}</th>
         </tr>
         </thead>
         <tbody>
@@ -103,36 +103,36 @@
                 <div id="commandLinks" ng-show="bundleStable(bundle)">
                 <span ng-hide="bundle.isActive()">
                     <a ng-click="startBundle(bundle)">
-                        <img src='../admin/img/trans.gif' alt="{{msg('admin.bundles.start')}}"
+                        <img src='resources/img/trans.gif' alt="{{msg('admin.bundles.start')}}"
                              title="{{msg('admin.bundles.start')}}"
                              class="action action-start"/>
                     </a>
                 </span>
                 <span ng-show="bundle.isActive()">
                     <a ng-click="stopBundle(bundle)">
-                        <img src="../admin/img/trans.gif" alt="{{msg('admin.bundles.stop')}}" title="{{msg('admin.bundles.stop')}}"
+                        <img src="resources/img/trans.gif" alt="{{msg('admin.bundles.stop')}}" title="{{msg('admin.bundles.stop')}}"
                              class="action action-stop"/>
                     </a>
                     <a ng-click="restartBundle(bundle)">
-                        <img src="../admin/img/trans.gif" alt="{{msg('admin.bundles.restart')}}"
+                        <img src="resources/img/trans.gif" alt="{{msg('admin.bundles.restart')}}"
                              title="{{msg('admin.bundles.restart')}}"
                              class="action action-restart"/>
                     </a>
                 </span>
                 <span ng-show="showSettings(bundle)">
                     <a ng-href="{{(bundle.settingsURL != null && bundle.isActive()) && ('?moduleName=' + bundle.moduleName + '#' + bundle.settingsURL) || ('#/bundleSettings/' + bundle.bundleId)}}">
-                        <img src="../admin/img/trans.gif" alt="{{msg('admin.settings')}}" title="{{msg('admin.settings')}}"
+                        <img src="resources/img/trans.gif" alt="{{msg('admin.settings')}}" title="{{msg('admin.settings')}}"
                              class="action action-settings"/>
                     </a>
                 </span>
                     <a ng-click="uninstallBundle(bundle)">
-                        <img src="../admin/img/trans.gif" alt="{{msg('admin.bundles.uninstall')}}"
+                        <img src="resources/img/trans.gif" alt="{{msg('admin.bundles.uninstall')}}"
                              title="{{msg('admin.bundles.uninstall')}}"
                              class="action action-remove"/>
                     </a>
                 </div>
                 <div class="loader.wrapper" ng-hide="bundleStable(bundle)">
-                    <img class="small-icon" src="../admin/img/load.gif" alt="loading"/>
+                    <img class="small-icon" src="resources/img/load.gif" alt="loading"/>
                 </div>
             </td>
         </tr>

@@ -39,7 +39,7 @@
     </bean>
 
 
-    <bean id="header" class="org.motechproject.osgi.web.Header"/>
+
 
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
@@ -52,29 +52,6 @@
     </bean>
 
 
-    <bean id="adminModuleRegistrationData" class="org.motechproject.osgi.web.ModuleRegistrationData">
-        <constructor-arg name="url" value="resources/partials/admin.html"/>
-        <constructor-arg name="moduleName" value="admin.module"/>
-        <constructor-arg name="angularModules">
-            <list>
-                <value>motech-admin</value>
-            </list>
-        </constructor-arg>
-        <constructor-arg name="i18n">
-            <map>
-                <entry key="messages" value="resources/messages/"/>
-            </map>
-        </constructor-arg>
-        <constructor-arg name="header" ref="header"/>
-        <property name="subMenu">
-            <map>
-                <entry key="admin.manageModules" value="#/bundles"/>
-                <entry key="admin.messages" value="#/messages"/>
-                <entry key="admin.settings" value="#/platform-settings"/>
-                <entry key="admin.log" value="#/log"/>
-                <entry key="admin.queues" value="#/queues"/>
-            </map>
-        </property>
-    </bean>
+
 
 </beans>

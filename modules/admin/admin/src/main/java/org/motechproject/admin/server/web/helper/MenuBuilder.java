@@ -1,25 +1,24 @@
 package org.motechproject.admin.server.web.helper;
 
-import org.motechproject.admin.server.web.dto.ModuleMenu;
-import org.motechproject.osgi.web.ModuleRegistrationData;
-import org.motechproject.osgi.web.SubmenuInfo;
-import org.motechproject.osgi.web.UIFrameworkService;
 import org.motechproject.admin.security.model.RoleDto;
 import org.motechproject.admin.security.service.MotechRoleService;
 import org.motechproject.admin.security.service.MotechUserService;
 import org.motechproject.admin.server.web.dto.ModuleMenu;
 import org.motechproject.admin.server.web.dto.ModuleMenuLink;
 import org.motechproject.admin.server.web.dto.ModuleMenuSection;
+import org.motechproject.osgi.web.ModuleRegistrationData;
+import org.motechproject.osgi.web.SubmenuInfo;
+import org.motechproject.osgi.web.UIFrameworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import static org.motechproject.osgi.web.UIFrameworkService.MODULES_WITHOUT_SUBMENU;
-import static org.motechproject.osgi.web.UIFrameworkService.MODULES_WITH_SUBMENU;
 
 /**
  * Helper class for building the modules menu view(left-hand side nav). Modules to display are retrieved
@@ -38,6 +37,10 @@ public class MenuBuilder {
 
     @Autowired
     private MotechRoleService roleService;
+
+
+    @Autowired
+    private ModuleRegistrationData moduleRegistrationData;
 
     /**
      * Builds the menu for the given user. Modules are retrieved from {@code UIFrameworkService} and filtered
@@ -85,10 +88,11 @@ public class MenuBuilder {
     }
 
     private List<ModuleRegistrationData> getModulesWithSubMenu(String userName) {
-        return filterPermittedModules(
-                userName,
-                uiFrameworkService.getRegisteredModules().get(MODULES_WITH_SUBMENU)
-        );
+        return Arrays.asList(moduleRegistrationData);
+//        return filterPermittedModules(
+//                userName,
+//                uiFrameworkService.getRegisteredModules().get(MODULES_WITH_SUBMENU)
+//        );
     }
 
     private List<ModuleRegistrationData> getModulesWithoutSubMenu(String username) {

@@ -14,14 +14,6 @@
         <property name="bundleDir" value="${user.home}/.motech/bundles"/>
     </bean>
 
-    <bean id="moduleRegistrationData" class="org.motechproject.osgi.web.ModuleRegistrationData">
-        <constructor-arg name="moduleName" value="server-bundle"/>
-        <constructor-arg name="i18n">
-            <map>
-                <entry key="messages" value="resources/messages/"/>
-            </map>
-        </constructor-arg>
-    </bean>
 
 
     <bean id="currentTenant" class="org.motechproject.commons.api.Tenant" factory-method="current"/>
