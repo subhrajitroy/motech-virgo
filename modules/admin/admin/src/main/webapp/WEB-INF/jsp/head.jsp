@@ -73,3 +73,11 @@
 <script type="text/javascript" src="resources/js/controllers.js"></script>
 <script type="text/javascript" src="resources/js/dashboard.js"></script>
 <script type="text/javascript" src="resources/js/browser-detect.js"></script>
+
+<!--admin bundle js files--->
+
+<script type="text/javascript" src="resources/js/admin/app.js"></script>
+<script type="text/javascript" src="resources/js/admin/controllers.js"></script>
+<script type="text/javascript" src="resources/js/admin/directives.js"></script>
+<script type="text/javascript" src="resources/js/admin/services.js"></script>
+
