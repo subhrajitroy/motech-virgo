@@ -125,32 +125,44 @@ public class LocaleServiceImpl implements LocaleService, BundleContextAware {
         Map<String, String> result = new HashMap<>();
 
         for (Map.Entry<String, Collection<ModuleRegistrationData>> entry : modules.entrySet()) {
-            for (ModuleRegistrationData module : entry.getValue()) {
-                Bundle bundle = module.getBundle();
-
-                try {
-                    for (String path : I18N_RESOURCES_PATHS) {
-                        Enumeration<URL> defaultMsgResources = bundle.findEntries(path, "messages.properties", true);
-
-                        if (defaultMsgResources != null) {
-                            Properties props = loadFromResources(defaultMsgResources);
-                            result.putAll((Map) props);
-                        }
-
-                        String fileName = String.format("messages_%s.properties", getUserLocale(request));
-                        Enumeration<URL> msgResources = bundle.findEntries(path, fileName, true);
-
-                        if (msgResources != null) {
-                            Properties props = loadFromResources(msgResources);
-                            result.putAll((Map) props);
-                        }
-                    }
-                } catch (IOException e) {
-                    LOG.error("Unable to load bundle messages", e);
-                }
+            for (ModuleRegistrationData moduleRegistrationData : entry.getValue()) {
+                Map<String, String> map = dataFromModuleRegistrationData(request, moduleRegistrationData.getBundle());
+                result.putAll(map);
             }
         }
 
+        return result;
+    }
+
+    @Override
+    public Map<String, String> getMessages(HttpServletRequest request, Bundle bundle) {
+        return dataFromModuleRegistrationData(request, bundle);
+    }
+
+    private Map<String, String> dataFromModuleRegistrationData(HttpServletRequest request, Bundle bundle) {
+
+        Map<String, String> result = new HashMap<>();
+
+        try {
+            for (String path : I18N_RESOURCES_PATHS) {
+                Enumeration<URL> defaultMsgResources = bundle.findEntries(path, "messages.properties", true);
+
+                if (defaultMsgResources != null) {
+                    Properties props = loadFromResources(defaultMsgResources);
+                    result.putAll((Map) props);
+                }
+
+                String fileName = String.format("messages_%s.properties", getUserLocale(request));
+                Enumeration<URL> msgResources = bundle.findEntries(path, fileName, true);
+
+                if (msgResources != null) {
+                    Properties props = loadFromResources(msgResources);
+                    result.putAll((Map) props);
+                }
+            }
+        } catch (IOException e) {
+            LOG.error("Unable to load bundle messages", e);
+        }
         return result;
     }
 

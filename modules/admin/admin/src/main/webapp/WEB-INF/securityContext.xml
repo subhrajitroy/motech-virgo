@@ -53,14 +53,17 @@
         <property name="loginFormUrl" value="/login"/>
     </bean>
 
-    <security:http pattern="/resources/**" security="none"/>
-    <security:http pattern="/login" security="none"/>
+    <!--<security:http pattern="/resources/**" security="none"/>-->
+    <!--<security:http pattern="/login/**" security="none"/>-->
+    <!--<security:http pattern="/startup/**" security="none"/>-->
+    <!--<security:http pattern="/bootstrap/**" security="none"/>-->
 
     <security:http auto-config="false" entry-point-ref="loginFormAuthentication" use-expressions="true">
         <security:custom-filter position="LOGOUT_FILTER" ref="logoutFilter"/>
         <security:custom-filter position="FORM_LOGIN_FILTER" ref="userAuthenticationProcessingFilter"/>
         <security:custom-filter position="OPENID_FILTER" ref="openIdAuthenticationProcessingFilter"/>
-        <security:intercept-url pattern="/**" access="isFullyAuthenticated()"/>
+        <security:intercept-url pattern="/**" access="isAnonymous()"/>
+        <security:anonymous/>
     </security:http>
 
     <security:authentication-manager alias="authenticationManager">

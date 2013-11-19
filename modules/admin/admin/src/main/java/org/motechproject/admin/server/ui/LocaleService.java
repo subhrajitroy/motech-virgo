@@ -1,5 +1,8 @@
 package org.motechproject.admin.server.ui;
 
+import org.motechproject.osgi.web.ModuleRegistrationData;
+import org.osgi.framework.Bundle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
@@ -18,4 +21,6 @@ public interface LocaleService {
     NavigableMap<String, String> getAvailableLanguages();
 
     Map<String, String> getMessages(HttpServletRequest request);
+
+    Map<String, String> getMessages(HttpServletRequest request, Bundle bundle);
 }

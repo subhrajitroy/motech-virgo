@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="${pageLang}" />
-<fmt:setBundle basename="org.motechproject.resources.messages" var="bundle"/>
+<fmt:setBundle basename="resources/messages" var="bundle"/>
 
 <!DOCTYPE html>
 <html>
