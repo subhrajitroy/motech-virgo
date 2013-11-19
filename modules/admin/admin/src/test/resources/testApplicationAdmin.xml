@@ -7,11 +7,11 @@
     
     <context:annotation-config/>
 
-    <bean id="allNotificationRules" class="org.motechproject.admin.repository.AllNotificationRules"/>
+    <bean id="allNotificationRules" class="org.motechproject.admin.core.repository.AllNotificationRules"/>
 
     <bean id="couchDbManager" class="org.motechproject.commons.couchdb.service.impl.CouchDbManagerImpl"/>
 
-    <bean id="allStatusMessages" class="org.motechproject.admin.repository.AllStatusMessages"/>
+    <bean id="allStatusMessages" class="org.motechproject.admin.core.repository.AllStatusMessages"/>
 
     <bean id="adminDbConnector" factory-bean="couchDbManager" factory-method="getConnector">
         <constructor-arg value="motech-admin"/>

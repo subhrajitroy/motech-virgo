@@ -1,49 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:osgi="http://www.eclipse.org/gemini/blueprint/schema/blueprint"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-       http://www.eclipse.org/gemini/blueprint/schema/blueprint http://www.eclipse.org/gemini/blueprint/schema/blueprint/gemini-blueprint.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       ">
+
+    <context:component-scan base-package="org.motechproject.admin.security">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <context:component-scan base-package="org.motechproject.admin.core">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <context:component-scan base-package="org.motechproject.admin.server">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <import resource="blueprint.xml"/>
+    <import resource="securityContext.xml"/>
+    <import resource="applicationAdmin.xml"/>
+    <import resource="applicationWebSecurityContext.xml"/>
+
+    <bean id="webSecurityDbConnector" factory-bean="couchDbManager" factory-method="getConnector">
+        <constructor-arg value="motech-web-security"/>
+    </bean>
+
+    <bean id="adminDbConnector" factory-bean="couchDbManager" factory-method="getConnector">
+        <constructor-arg value="motech-admin"/>
+    </bean>
+
+    <bean id="settingsDbConnector" factory-bean="couchDbManager" factory-method="getConnector">
+        <constructor-arg value="motech-platform-startup"/>
+    </bean>
+
+    <bean id="jmxSettings" class="org.motechproject.server.config.SettingsFacade" autowire="byType">
+        <property name="configFiles">
+            <list>
+                <value>classpath:jmx.properties</value>
+            </list>
+        </property>
+        <property name="moduleName" value="admin.module"/>
+    </bean>
 
 
-    <osgi:reference id="couchDbManager" interface="org.motechproject.commons.couchdb.service.CouchDbManager"/>
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.motechproject.admin.core.email.BundleResourceLoader
+            </value>
+        </property>
+    </bean>
 
-    <osgi:reference id="configurationServiceOsgi"
-                    interface="org.motechproject.config.service.ConfigurationService"/>
-
-    <osgi:reference id="platformSettingsServiceOsgi"
-                    interface="org.motechproject.server.config.service.PlatformSettingsService"/>
-
-    <osgi:reference id="eventRelayOsgi" interface="org.motechproject.event.listener.EventRelay"/>
-
-    <osgi:reference id="eventListenerRegistryServiceOsgi"
-                    interface="org.motechproject.event.listener.EventListenerRegistryService"/>
-
-    <osgi:reference id="packageAdmin" interface="org.osgi.service.packageadmin.PackageAdmin"/>
-
-    <osgi:reference id="uiFrameworkServiceOsgi" interface="org.motechproject.osgi.web.UIFrameworkService"
-                    availability="optional"/>
-
-    <!--<osgi:reference id="mailSender" interface="org.motechproject.email.service.EmailSenderService"/>-->
-
-    <osgi:reference id="serverLogServiceOsgi" interface="org.motechproject.osgi.web.service.ServerLogService"/>
-
-    <!--From Platform Bundle -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost"/>
+        <property name="port" value="25"/>
+    </bean>
 
 
-    <osgi:reference id="configLoader" interface="org.motechproject.server.config.service.ConfigLoader"/>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list value-type="java.lang.String">
+                <value>/resources/messages/messages</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="fallbackToSystemLocale" value="false"/>
+    </bean>
 
-    <osgi:reference id="userService" interface="org.motechproject.security.service.MotechUserService"/>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
 
-    <osgi:reference id="roleService" interface="org.motechproject.security.service.MotechRoleService"/>
+    <bean id="cookieLocaleResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="cookieName" value="userLang"/>
+        <property name="cookieMaxAge" value="100000"/>
+    </bean>
 
-    <osgi:reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
+    <bean id="currentTenant" class="org.motechproject.commons.api.Tenant" factory-method="current"/>
 
-    <!--<osgi:reference id="configurationService" interface="org.motechproject.config.service.ConfigurationService"/>-->
-
-    <!--Security-->
-
-
-    <!--<bean id="rolePermissionRegListener" class="org.motechproject.security.osgi.RolePermissionRegistrationListener"/>-->
 
 </beans>
