@@ -1,4 +1,4 @@
-package org.motechproject.admin.server.ui.ex;
+package org.motechproject.osgi.web.exception;
 
 public class AlreadyRegisteredException extends RuntimeException {
 

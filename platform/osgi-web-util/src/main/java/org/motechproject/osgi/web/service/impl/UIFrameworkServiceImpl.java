@@ -1,17 +1,14 @@
-package org.motechproject.admin.server.ui.impl;
+package org.motechproject.osgi.web.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.gemini.blueprint.util.OsgiBundleUtils;
 import org.motechproject.osgi.web.ModuleRegistrationData;
 import org.motechproject.osgi.web.SubmenuInfo;
 import org.motechproject.osgi.web.UIFrameworkService;
-import org.motechproject.admin.server.ui.comparator.IndividualsComparator;
-import org.motechproject.admin.server.ui.ex.AlreadyRegisteredException;
+import org.motechproject.osgi.web.domain.IndividualsComparator;
+import org.motechproject.osgi.web.exception.AlreadyRegisteredException;
 import org.osgi.framework.Bundle;
-import org.osgi.service.packageadmin.PackageAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -19,10 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Implementation of the {@link UIFrameworkService} interface. Stores the registered {@link ModuleRegistrationData}
- * in memory.
- */
 @Service("uiFrameworkService")
 public class UIFrameworkServiceImpl implements UIFrameworkService {
 

@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,35 +52,45 @@ public class DashboardController {
     private List<ApplicationContext> applicationContexts;
 
     @RequestMapping({"/index", "/", "/home"})
-    public ModelAndView index(final HttpServletRequest request) {
+    public ModelAndView index(@RequestParam(required = false) String moduleName, final HttpServletRequest request) {
         ModelAndView mav;
 
         // check if this is the first run
         if (startupManager.isConfigRequired()) {
             mav = new ModelAndView("redirect:startup.do");
         } else {
-            mav = indexPage(request);
+            mav = indexPage(request, moduleName);
         }
 
         return mav;
     }
 
-    private ModelAndView indexPage(HttpServletRequest request) {
+    private ModelAndView indexPage(HttpServletRequest request, String moduleName) {
         ModelAndView mav;
-        mav = new ModelAndView("index");
-        String contextPath = request.getSession().getServletContext().getContextPath();
 
-        if (StringUtils.isNotBlank(contextPath) && !"/".equals(contextPath)) {
-            mav.addObject("contextPath", contextPath.substring(1) + "/");
-        } else if (StringUtils.isBlank(contextPath) || "/".equals(contextPath)) {
-            mav.addObject("contextPath", "");
+        // check if this is the first run
+        if (startupManager.isConfigRequired()) {
+            mav = new ModelAndView("redirect:startup.do");
+        } else {
+            mav = new ModelAndView("index");
+            String contextPath = request.getSession().getServletContext().getContextPath();
+
+            if (StringUtils.isNotBlank(contextPath) && !"/".equals(contextPath)) {
+                mav.addObject("contextPath", contextPath.substring(1) + "/");
+            } else if (StringUtils.isBlank(contextPath) || "/".equals(contextPath)) {
+                mav.addObject("contextPath", "");
+            }
+
+            if (moduleName != null) {
+                ModuleRegistrationData currentModule = uiFrameworkService.getModuleData(moduleName);
+                if (currentModule != null) {
+                    mav.addObject("currentModule", currentModule);
+                    mav.addObject("criticalNotification", currentModule.getCriticalMessage());
+                    uiFrameworkService.moduleBackToNormal(moduleName);
+                }
+            }
         }
 
-
-        if (moduleRegistrationData != null) {
-            mav.addObject("currentModule", moduleRegistrationData);
-            mav.addObject("criticalNotification", moduleRegistrationData.getCriticalMessage());
-        }
         return mav;
     }
 

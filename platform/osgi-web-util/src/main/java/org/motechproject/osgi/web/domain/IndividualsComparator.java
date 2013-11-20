@@ -1,4 +1,4 @@
-package org.motechproject.admin.server.ui.comparator;
+package org.motechproject.osgi.web.domain;
 
 import java.util.Comparator;
 

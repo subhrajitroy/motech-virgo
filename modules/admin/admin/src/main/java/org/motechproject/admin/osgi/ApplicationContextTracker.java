@@ -44,8 +44,14 @@ public class ApplicationContextTracker extends ServiceTracker {
         if (serviceReference != null) {
             UIFrameworkService uiFrameworkService = (UIFrameworkService) context.getService(serviceReference);
             for (ModuleRegistrationData registrationData : moduleRegistrationDataList) {
-                uiFrameworkService.registerModule(registrationData);
-                System.out.println("Registered module data for " + OsgiStringUtils.nullSafeSymbolicName(registrationData.getBundle()));
+                String bundleName = OsgiStringUtils.nullSafeSymbolicName(registrationData.getBundle());
+                try {
+                    uiFrameworkService.registerModule(registrationData);
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage() + " for bundle ");
+                }
+
+                System.out.println("Registered module data for " + bundleName);
             }
             moduleRegistrationDataList.clear();
         }

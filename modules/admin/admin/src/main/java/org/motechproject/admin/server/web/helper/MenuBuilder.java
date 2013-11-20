@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.motechproject.osgi.web.UIFrameworkService.MODULES_WITHOUT_SUBMENU;
+import static org.motechproject.osgi.web.UIFrameworkService.MODULES_WITH_SUBMENU;
 
 /**
  * Helper class for building the modules menu view(left-hand side nav). Modules to display are retrieved
