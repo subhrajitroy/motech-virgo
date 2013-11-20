@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +37,6 @@ public class MenuBuilder {
     @Autowired
     private MotechRoleService roleService;
 
-
-    @Autowired
-    private ModuleRegistrationData moduleRegistrationData;
 
     /**
      * Builds the menu for the given user. Modules are retrieved from {@code UIFrameworkService} and filtered
@@ -88,11 +84,10 @@ public class MenuBuilder {
     }
 
     private List<ModuleRegistrationData> getModulesWithSubMenu(String userName) {
-        return Arrays.asList(moduleRegistrationData);
-//        return filterPermittedModules(
-//                userName,
-//                uiFrameworkService.getRegisteredModules().get(MODULES_WITH_SUBMENU)
-//        );
+        return filterPermittedModules(
+                userName,
+                uiFrameworkService.getRegisteredModules().get(MODULES_WITH_SUBMENU)
+        );
     }
 
     private List<ModuleRegistrationData> getModulesWithoutSubMenu(String username) {

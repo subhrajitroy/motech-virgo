@@ -402,15 +402,15 @@
 
         $scope.saveAll = function () {
             blockUI();
-            $http.post('platform/list', $scope.platformSettings.settingsList).
+            $http.post('settings/platform/list', $scope.platformSettings.settingsList).
                 success(alertHandler('admin.settings.saved', 'admin.success')).
                 error(alertHandler('admin.settings.error.location'));
         };
 
         $scope.exportConfig = function () {
-            $http.get('platform/export').
+            $http.get('settings/platform/export').
             success(function () {
-                window.location.replace("platform/export");
+                window.location.replace("settings/platform/export");
             }).
             error(alertHandler('admin.settings.error.export', 'admin.error'));
         };

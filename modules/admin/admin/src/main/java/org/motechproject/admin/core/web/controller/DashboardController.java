@@ -9,7 +9,10 @@ import org.motechproject.admin.server.web.dto.ModuleMenu;
 import org.motechproject.admin.server.web.form.UserInfo;
 import org.motechproject.admin.server.web.helper.MenuBuilder;
 import org.motechproject.osgi.web.ModuleRegistrationData;
+import org.motechproject.osgi.web.UIFrameworkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.management.ManagementFactory;
+import java.util.List;
 import java.util.Locale;
 
 import static org.joda.time.format.DateTimeFormat.forPattern;
@@ -30,6 +34,8 @@ public class DashboardController {
     @Autowired
     private StartupManager startupManager;
 
+    @Autowired
+    private UIFrameworkService uiFrameworkService;
 
     @Autowired
     private ModuleRegistrationData moduleRegistrationData;
@@ -39,6 +45,10 @@ public class DashboardController {
 
     @Autowired
     private MenuBuilder menuBuilder;
+
+    @Autowired
+    @Qualifier("applicationContexts")
+    private List<ApplicationContext> applicationContexts;
 
     @RequestMapping({"/index", "/", "/home"})
     public ModelAndView index(final HttpServletRequest request) {
@@ -64,6 +74,7 @@ public class DashboardController {
         } else if (StringUtils.isBlank(contextPath) || "/".equals(contextPath)) {
             mav.addObject("contextPath", "");
         }
+
 
         if (moduleRegistrationData != null) {
             mav.addObject("currentModule", moduleRegistrationData);
