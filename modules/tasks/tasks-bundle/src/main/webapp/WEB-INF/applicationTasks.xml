@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:osgi="http://www.eclipse.org/gemini/blueprint/schema/blueprint"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.eclipse.org/gemini/blueprint/schema/blueprint http://www.eclipse.org/gemini/blueprint/schema/blueprint/gemini-blueprint.xsd
+       ">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="org.motechproject.tasks">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <import resource="blueprint.xml"/>
+
+
+    <bean id="taskDbConnector" factory-bean="couchDbManager" factory-method="getConnector">
+        <constructor-arg value="motech-tasks"/>
+    </bean>
+
+    <bean id="tasksSettings" class="org.motechproject.server.config.SettingsFacade" autowire="byType">
+        <property name="configFiles">
+            <list>
+                <value>classpath:handler-settings.properties</value>
+            </list>
+        </property>
+        <property name="moduleName" value="tasks"/>
+    </bean>
+
+
+    <bean id="header" class="org.motechproject.osgi.web.Header"/>
+
+    <bean id="moduleRegistrationData" class="org.motechproject.osgi.web.ModuleRegistrationData">
+        <constructor-arg name="url" value="../tasks/index.html"/>
+        <constructor-arg name="moduleName" value="tasks"/>
+        <constructor-arg name="angularModules">
+            <list>
+                <value>motech-tasks</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="i18n">
+            <map>
+                <entry key="messages" value="../tasks/messages/"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="header" ref="header"/>
+        <property name="settingsURL" value="/settings"/>
+    </bean>
+
+    <osgi:service id="channelServiceOsgi" auto-export="interfaces" ref="channelService"
+                  interface="org.motechproject.tasks.service.ChannelService">
+        <osgi:registration-listener>
+            <bean class="org.motechproject.tasks.osgi.ChannelServiceRegistrationListener"/>
+        </osgi:registration-listener>
+    </osgi:service>
+
+    <osgi:service id="dataProviderServiceOsgi" auto-export="interfaces" ref="taskDataProviderService"
+                  interface="org.motechproject.tasks.service.TaskDataProviderService"/>
+
+    <osgi:service id="taskServiceOsgi" auto-export="interfaces" ref="taskService"
+                  interface="org.motechproject.tasks.service.TaskService"/>
+
+    <osgi:service id="taskTriggerHandlerOsgi" auto-export="interfaces" ref="taskTriggerHandler"
+                  interface="org.motechproject.tasks.service.TriggerHandler"/>
+
+    <osgi:set id="dataProvidersOSGi" interface="org.motechproject.commons.api.DataProvider" availability="optional">
+        <osgi:reference-listener ref="managementDataProvider"/>
+    </osgi:set>
+
+
+</beans>

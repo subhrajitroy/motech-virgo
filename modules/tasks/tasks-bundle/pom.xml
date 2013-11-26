@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>motech</artifactId>
         <groupId>org.motechproject</groupId>
@@ -12,7 +13,7 @@
     <artifactId>motech-tasks-bundle</artifactId>
     <name>MOTECH Tasks Bundle</name>
     <version>0.22-SNAPSHOT</version>
-    <packaging>bundle</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <modules.root.dir>${basedir}/../../..</modules.root.dir>
@@ -21,17 +22,46 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>motech-tasks</artifactId>
+            <artifactId>motech-platform-server-api</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>motech-platform-commons-couchdb</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>motech-platform-event</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.web.servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>com.springsource.org.apache.commons.beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>com.springsource.org.apache.commons.fileupload</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>motech-platform-osgi-web-util</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Test -->
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-platform-osgi-extender-fragment</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>motech-testing-utils</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -71,42 +101,30 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jslint-maven-plugin</artifactId>
-                <version>1.0.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jslint</goal>
-                        </goals>
-                        <configuration>
-                            <sourceJsFolder>${basedir}/src/main/resources/webapp/js</sourceJsFolder>
-                            <disallowIncrAndDecr>true</disallowIncrAndDecr>
-                            <requireUseStrict>true</requireUseStrict>
-                            <predefinedVars>
-                                $, jQuery, angular, DashboardCtrl, ManageTaskCtrl, LogCtrl, moment,
-                                dummyHandler, handleResponse, jConfirm, alertHandler, window,
-                                blockUI, unblockUI, motechAlert, motechConfirm, jAlert, cloneObj,
-                                isBlank
-                            </predefinedVars>
-                            <failOnIssues>${jslint.enable}</failOnIssues>
-                            <excludes>
-                                <exclude>rangy-core.js</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>2.3.4</version>
                 <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <supportedProjectTypes>
+                        <supportedProjectType>war</supportedProjectType>
+                    </supportedProjectTypes>
                     <instructions>
                         <Context-Path>tasks/api</Context-Path>
                         <Resource-Path>tasks</Resource-Path>
                         <Blueprint-Enabled>true</Blueprint-Enabled>
+                        <Bundle-SymbolicName>motech-tasks</Bundle-SymbolicName>
+                        <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
+                        <Web-ContextPath>/tasks/api</Web-ContextPath>
                         <Export-Package>
                             org.motechproject.tasks.*;version=${project.version}
                         </Export-Package>
@@ -130,10 +148,34 @@
                             org.springframework.web.servlet.mvc,
                             org.springframework.web.servlet.support,
                             org.springframework.web.servlet.view,
+                            org.eclipse.virgo.web.dm,
+                            org.motechproject.osgi.web,
                             *
                         </Import-Package>
-                        <Embed-Dependency>motech-tasks;inline=true</Embed-Dependency>
                     </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <packagingExcludes>
+                        WEB-INF/lib/,
+                        WEB-INF/classes/META-INF/
+                    </packagingExcludes>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -152,157 +194,20 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${user.home}/.motech/bundles</outputDirectory>
+                            <outputDirectory>${user.home}/virgo/virgo-tomcat-server/pickup</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>target</directory>
                                     <includes>
-                                        <include>*.jar</include>
+                                        <include>*.war</include>
                                     </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-module-js</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/js</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources/webapp/js</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-platform-js</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/js/core</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/main/resources/webapp/lib</directory>
-                                </resource>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/main/resources/webapp/js</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-jasmine-spec-lib</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/spec/lib</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/main/resources/webapp/lib/angular</directory>
-                                    <includes>
-                                        <inlude>angular.min.js</inlude>
-                                    </includes>
-                                </resource>
-                                <resource>
-                                    <directory>${modules.root.dir}/platform/server-bundle/src/test/resources/lib</directory>
-                                    <includes>
-                                        <include>angular-mocks.js</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-jasmine-spec</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jasmine/spec/spec</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/test/resources/jasmine</directory>
                                 </resource>
                             </resources>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.github.searls</groupId>
-                <artifactId>jasmine-maven-plugin</artifactId>
-                <version>1.3.1.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skipTests>${maven.test.skip}</skipTests>
-                    <serverPort>${jasmine.server.port}</serverPort>
-
-                    <jsSrcDir>${project.build.directory}/jasmine</jsSrcDir>
-                    <sourceIncludes>
-                        <include>js/core/angular/angular.min.js</include>
-                        <include>js/core/angular/angular-resource.min.js</include>
-                        <include>js/core/jquery/jquery.js</include>
-                        <include>js/core/**/*.js</include>
-                        <include>js/*.js</include>
-                    </sourceIncludes>
-
-                    <jsTestSrcDir>${project.build.directory}/jasmine/spec</jsTestSrcDir>
-                    <specIncludes>
-                        <include>lib/*.js</include>
-                        <include>spec/*.js</include>
-                    </specIncludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>IT</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>drop DB =&gt; motech-tasks</id>
-                                <phase>pre-integration-test</phase>
-                                <configuration>
-                                    <target>
-                                        <exec executable="curl">
-                                            <arg value="-s" />
-                                            <arg value="-S" />
-                                            <arg value="-X" />
-                                            <arg value="DELETE" />
-                                            <arg value="http://${db.server}:${db.port}/${db.prefix}motech-tasks" />
-                                        </exec>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>

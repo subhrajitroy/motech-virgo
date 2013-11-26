@@ -17,19 +17,19 @@
         <constructor-arg value="motech-tasks"/>
     </bean>
 
-    <bean class="org.motechproject.tasks.repository.AllChannels">
+    <bean class="tasks.repository.AllChannels">
         <constructor-arg ref="testTaskDbConnector"/>
     </bean>
 
-    <bean class="org.motechproject.tasks.repository.AllTaskDataProviders">
+    <bean class="tasks.repository.AllTaskDataProviders">
         <constructor-arg ref="testTaskDbConnector"/>
     </bean>
 
-    <osgi:reference id="dataProviderServiceOsgi" interface="org.motechproject.tasks.service.TaskDataProviderService"/>
+    <osgi:reference id="dataProviderServiceOsgi" interface="tasks.service.TaskDataProviderService"/>
 
     <osgi:set id="dataProvidersOSGi" interface="org.motechproject.commons.api.DataProvider" availability="optional">
         <osgi:reference-listener>
-            <bean class="org.motechproject.tasks.util.ManagementDataProvider">
+            <bean class="tasks.util.ManagementDataProvider">
                 <constructor-arg ref="dataProviderServiceOsgi"/>
             </bean>
         </osgi:reference-listener>
