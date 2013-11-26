@@ -365,7 +365,7 @@
                 'action': '@'
             },
             compile: function (tElement, tAttrs, scope) {
-                var url = '../tasks/partials/widgets/content-editable-' + tAttrs.type.toLowerCase() + '.html',
+                var url = '../tasks/api/resources/partials/widgets/content-editable-' + tAttrs.type.toLowerCase() + '.html',
 
                 templateLoader = $http.get(url, {cache: $templateCache})
                     .success(function (html) {
@@ -397,19 +397,19 @@
 
                 if (manType === 'STRING') {
                     title = msgScope.msg('task.stringManipulation', '');
-                    loader = $http.get('../tasks/partials/widgets/string-manipulation.html', {cache: $templateCache})
+                    loader = $http.get('../tasks/api/resources/partials/widgets/string-manipulation.html', {cache: $templateCache})
                         .success(function (html) {
                             manipulationOptions = html;
                         });
                 } else if (manType === 'DATE') {
                     title = msgScope.msg('task.dateManipulation', '');
-                    loader = $http.get('../tasks/partials/widgets/date-manipulation.html', {cache: $templateCache})
+                    loader = $http.get('../tasks/api/resources/partials/widgets/date-manipulation.html', {cache: $templateCache})
                         .success(function (html) {
                             manipulationOptions = html;
                         });
                 } else if (manType === 'DATE2DATE') {
                   title = msgScope.msg('task.dateManipulation', '');
-                   loader = $http.get('../tasks/partials/widgets/date2date-manipulation.html', {cache: $templateCache})
+                   loader = $http.get('../tasks/api/resources/partials/widgets/date2date-manipulation.html', {cache: $templateCache})
                        .success(function (html) {
                            manipulationOptions = html;
                        });
@@ -913,7 +913,7 @@
                 msgScope = msgScope.$parent;
             }
 
-            $http.get('../tasks/partials/help/' + attrs.helpPopover + '.html').success(function (html) {
+            $http.get('../tasks/api/resources/partials/help/' + attrs.helpPopover + '.html').success(function (html) {
                 $(element).popover({
                     placement: 'top',
                     trigger: 'hover',

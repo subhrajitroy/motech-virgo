@@ -8,11 +8,11 @@
                                     'motech-widgets']).config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.
-                when('/dashboard', {templateUrl: '../tasks/partials/tasks.html', controller: 'DashboardCtrl'}).
-                when('/task/new', {templateUrl: '../tasks/partials/form.html', controller: 'ManageTaskCtrl'}).
-                when('/task/:taskId/edit', {templateUrl: '../tasks/partials/form.html', controller: 'ManageTaskCtrl'}).
-                when('/task/:taskId/log', {templateUrl: '../tasks/partials/history.html', controller: 'LogCtrl'}).
-                when('/settings', {templateUrl: '../tasks/partials/settings.html', controller: 'SettingsCtrl'}).
+                when('/dashboard', {templateUrl: '../tasks/api/resources/partials/tasks.html', controller: 'DashboardCtrl'}).
+                when('/task/new', {templateUrl: '../tasks/api/resources/partials/form.html', controller: 'ManageTaskCtrl'}).
+                when('/task/:taskId/edit', {templateUrl: '../tasks/api/resources/partials/form.html', controller: 'ManageTaskCtrl'}).
+                when('/task/:taskId/log', {templateUrl: '../tasks/api/resources/partials/history.html', controller: 'LogCtrl'}).
+                when('/settings', {templateUrl: '../tasks/api/resources/partials/settings.html', controller: 'SettingsCtrl'}).
                 otherwise({redirectTo: '/dashboard'});
         }]);
 }());

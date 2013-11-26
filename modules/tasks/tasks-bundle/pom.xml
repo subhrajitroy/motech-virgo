@@ -150,6 +150,7 @@
                             org.springframework.web.servlet.view,
                             org.eclipse.virgo.web.dm,
                             org.motechproject.osgi.web,
+                            org.apache.xerces.jaxp,
                             *
                         </Import-Package>
                     </instructions>

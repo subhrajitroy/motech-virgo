@@ -1,7 +1,7 @@
 package org.motechproject.tasks.osgi;
 
 import org.junit.Test;
-import tasks.service.ChannelService;
+import org.motechproject.tasks.service.ChannelService;
 import org.osgi.framework.BundleContext;
 
 import static org.mockito.Mockito.mock;

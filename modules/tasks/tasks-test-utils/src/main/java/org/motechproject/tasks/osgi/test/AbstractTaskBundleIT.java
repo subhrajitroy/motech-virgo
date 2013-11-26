@@ -1,12 +1,12 @@
 package org.motechproject.tasks.osgi.test;
 
-import tasks.domain.ActionEvent;
-import tasks.domain.ActionParameter;
-import tasks.domain.Channel;
-import tasks.domain.EventParameter;
-import tasks.domain.TaskEvent;
-import tasks.domain.TriggerEvent;
-import tasks.service.ChannelService;
+import org.motechproject.tasks.domain.ActionEvent;
+import org.motechproject.tasks.domain.ActionParameter;
+import org.motechproject.tasks.domain.Channel;
+import org.motechproject.tasks.domain.EventParameter;
+import org.motechproject.tasks.domain.TaskEvent;
+import org.motechproject.tasks.domain.TriggerEvent;
+import org.motechproject.tasks.service.ChannelService;
 import org.motechproject.testing.osgi.BaseOsgiIT;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;

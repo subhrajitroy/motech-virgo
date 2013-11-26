@@ -27,7 +27,7 @@
                                     <img ng-src="../tasks/api/channel/icon?moduleName={{item.task.trigger.moduleName}}" class="task-list-img" />
                                 </div>
                             </li>
-                            <li class="task-element"><img src="../tasks/img/arrow.png" class="task-list-img-arrow"/></li>
+                            <li class="task-element"><img src="../tasks/api/resources/img/arrow.png" class="task-list-img-arrow"/></li>
                             <li class="task-element">
                                 <div actions-popover>
                                     <img ui-if="item.task.actions.length == 1" ng-src="../tasks/api/channel/icon?moduleName={{item.task.actions[0].moduleName}}" class="task-list-img"/>
@@ -44,11 +44,11 @@
                             <li class="task-element task-paused">
                                 <div class="task-list-button-activity">
                                     <div class="task-list-text-activity">{{msg('task.channel.deregistered')}}</div>
-                                    <div class="task-list-div-activity"><img class="task-list-img-activity" src="../tasks/img/task-paused.png" /></div>
+                                    <div class="task-list-div-activity"><img class="task-list-img-activity" src="../tasks/api/resources/img/task-paused.png" /></div>
                                 </div>
                             </li>
                             <li class="divider-vertical"></li>
-                            <li class="task-element"><img src="../tasks/img/task-settings-paused.png" class="task-list-img" /></li>
+                            <li class="task-element"><img src="../tasks/api/resources/img/task-settings-paused.png" class="task-list-img" /></li>
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -64,7 +64,7 @@
                                             <img ng-src="../tasks/api/channel/icon?moduleName={{item.task.trigger.moduleName}}" class="task-list-img" />
                                         </div>
                                     </li>
-                                    <li class="task-element"><img src="../tasks/img/arrow.png" class="task-list-img-arrow"/></li>
+                                    <li class="task-element"><img src="../tasks/api/resources/img/arrow.png" class="task-list-img-arrow"/></li>
                                     <li class="task-element">
                                         <div actions-popover>
                                             <img ui-if="item.task.actions.length == 1" ng-src="../tasks/api/channel/icon?moduleName={{item.task.actions[0].moduleName}}" class="task-list-img"/>
@@ -80,24 +80,24 @@
                             </a>
 
                             <ul class="task-nav pull-right">
-                                <li ng-show="item.task.description && item.task.enabled" class="task-element" rel="popover" bs-popover="{{item.task.description}}" data-trigger="hover"><img src="../tasks/img/task-info.png"  class="task-list-img" /></li>
-                                <li ng-show="item.task.description && !item.task.enabled"  class="task-element" bs-popover="{{item.task.description}}" data-trigger="hover"><img src="../tasks/img/task-info-paused.png"  class="task-list-img" /></li>
+                                <li ng-show="item.task.description && item.task.enabled" class="task-element" rel="popover" bs-popover="{{item.task.description}}" data-trigger="hover"><img src="../tasks/api/resources/img/task-info.png"  class="task-list-img" /></li>
+                                <li ng-show="item.task.description && !item.task.enabled"  class="task-element" bs-popover="{{item.task.description}}" data-trigger="hover"><img src="../tasks/api/resources/img/task-info-paused.png"  class="task-list-img" /></li>
                                 <li ng-show="item.task.description" class="divider-vertical"></li>
                                 <li ng-hide="item.task.enabled" class="task-element task-paused">
                                     <div class="task-list-button-activity">
                                         <div class="task-list-text-activity">{{msg('task.paused')}}</div>
-                                        <div class="task-list-div-activity"><img class="task-list-img-activity" src="../tasks/img/task-paused.png" /></div>
+                                        <div class="task-list-div-activity"><img class="task-list-img-activity" src="../tasks/api/resources/img/task-paused.png" /></div>
                                     </div>
                                 </li>
                                 <li ng-show="item.task.enabled" class="task-element task-active">
                                     <div class="task-list-button-activity">
-                                        <div class="task-list-div-activity"><img class="task-list-img-activity" src="../tasks/img/task-active.png" /></div>
+                                        <div class="task-list-div-activity"><img class="task-list-img-activity" src="../tasks/api/resources/img/task-active.png" /></div>
                                         <div class="task-list-text-activity">{{msg('task.active')}}</div>
                                     </div>
                                 </li>
                                 <li class="divider-vertical"></li>
-                                <li ng-show="item.task.enabled" class="task-element"><a href="#/task/{{item.task._id}}/edit"><img src="../tasks/img/task-settings.png" class="task-list-img" /></a></li>
-                                <li ng-hide="item.task.enabled" class="task-element"><a href="#/task/{{item.task._id}}/edit"><img src="../tasks/img/task-settings-paused.png" class="task-list-img" /></a></li>
+                                <li ng-show="item.task.enabled" class="task-element"><a href="#/task/{{item.task._id}}/edit"><img src="../tasks/api/resources/img/task-settings.png" class="task-list-img" /></a></li>
+                                <li ng-hide="item.task.enabled" class="task-element"><a href="#/task/{{item.task._id}}/edit"><img src="../tasks/api/resources/img/task-settings-paused.png" class="task-list-img" /></a></li>
                             </ul>
                             <div class="clearfix"></div>
                         </div>
@@ -185,7 +185,7 @@
                     </td>
                     <td>
                         <div>
-                            <img src="../tasks/img/arrow.png" class="recent-activity-arrow"/>
+                            <img src="../tasks/api/resources/img/arrow.png" class="recent-activity-arrow"/>
                         </div>
                     </td>
                     <td>
@@ -199,9 +199,9 @@
                     <td ui-jq="tooltip" ui-options="{placement:'left'}" data-original-title="{{msg('task.tooltip.clickToSeeDetails')}}">
                         <div>
                             <a href="#/task/{{activity.task}}/log">
-                                <img ng-show="activity.type == 'SUCCESS'" src="../tasks/img/icon-ok.png" class="recent-activity-icon"/>
-                                <img ng-show="activity.type == 'ERROR'" src="../tasks/img/icon-exclamation.png" class="recent-activity-icon"/>
-                                <img ng-show="activity.type == 'WARNING'" src="../tasks/img/icon-question.png" class="recent-activity-icon"/>
+                                <img ng-show="activity.type == 'SUCCESS'" src="../tasks/api/resources/img/icon-ok.png" class="recent-activity-icon"/>
+                                <img ng-show="activity.type == 'ERROR'" src="../tasks/api/resources/img/icon-exclamation.png" class="recent-activity-icon"/>
+                                <img ng-show="activity.type == 'WARNING'" src="../tasks/api/resources/img/icon-question.png" class="recent-activity-icon"/>
                             </a>
                         </div>
                     </td>
@@ -211,5 +211,5 @@
         </div>
     </div>
 </div>
-<div ng-include="'../tasks/partials/widgets/import-modal.html'"></div>
+<div ng-include="'../tasks/api/resources/partials/widgets/import-modal.html'"></div>
 </div>
