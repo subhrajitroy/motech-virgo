@@ -85,6 +85,7 @@ public class MenuBuilder {
     }
 
     private List<ModuleRegistrationData> getModulesWithSubMenu(String userName) {
+
         return filterPermittedModules(
                 userName,
                 uiFrameworkService.getRegisteredModules().get(MODULES_WITH_SUBMENU)
@@ -101,19 +102,25 @@ public class MenuBuilder {
     private List<ModuleRegistrationData> filterPermittedModules(String userName, Collection<ModuleRegistrationData> modules) {
         List<ModuleRegistrationData> allowedModules = new ArrayList<>();
 
-        if (modules != null) {
-            for (ModuleRegistrationData module : modules) {
-                String requiredPermissionForAccess = module.getRoleForAccess();
-
-                if (requiredPermissionForAccess != null) {
-                    if (checkUserPermission(userService.getRoles(userName), requiredPermissionForAccess)) {
-                        allowedModules.add(module);
-                    }
-                } else {
-                    allowedModules.add(module);
-                }
-            }
+        for (ModuleRegistrationData module : modules) {
+            allowedModules.add(module);
         }
+
+        //TODO:Disabling roles based access as of now,need to fix security bundle integration issue
+
+//        if (modules != null) {
+//            for (ModuleRegistrationData module : modules) {
+//                String requiredPermissionForAccess = module.getRoleForAccess();
+//
+//                if (requiredPermissionForAccess != null) {
+//                    if (checkUserPermission(userService.getRoles(userName), requiredPermissionForAccess)) {
+//                        allowedModules.add(module);
+//                    }
+//                } else {
+//                    allowedModules.add(module);
+//                }
+//            }
+//        }
 
         return allowedModules;
     }
