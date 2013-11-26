@@ -12,6 +12,8 @@ import org.motechproject.tasks.domain.Channel;
 import org.motechproject.tasks.domain.ChannelDeregisterEvent;
 import org.motechproject.tasks.domain.ChannelRegisterEvent;
 import org.motechproject.tasks.domain.TaskError;
+import org.motechproject.tasks.events.constants.EventDataKeys;
+import org.motechproject.tasks.events.constants.EventSubjects;
 import org.motechproject.tasks.ex.ValidationException;
 import org.motechproject.tasks.json.ActionEventRequestDeserializer;
 import org.motechproject.tasks.repository.AllChannels;
@@ -24,8 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.motechproject.tasks.events.constants.EventDataKeys;
-import org.motechproject.tasks.events.constants.EventSubjects;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -171,7 +171,7 @@ public class ChannelServiceImpl implements ChannelService {
         return bundleIcon;
     }
 
-    @Autowired(required = false)
+    @Autowired(required = true)
     public void setBundleContext(BundleContext bundleContext) {
         this.bundleContext = bundleContext;
     }
