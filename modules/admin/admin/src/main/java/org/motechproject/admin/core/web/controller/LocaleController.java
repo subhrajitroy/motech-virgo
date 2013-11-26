@@ -1,7 +1,6 @@
 package org.motechproject.admin.core.web.controller;
 
 import org.motechproject.admin.server.ui.LocaleService;
-import org.osgi.framework.Bundle;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,8 +50,7 @@ public class LocaleController {
     @RequestMapping(value = "/lang/locate")
     @ResponseBody
     public Map<String, String> getLangLocalisation(HttpServletRequest request) {
-        Bundle bundle = packageAdmin.getBundle(LocaleController.class);
-        return localeService.getMessages(request, bundle);
+        return localeService.getMessages(request);
     }
 
 }

@@ -134,11 +134,6 @@ public class LocaleServiceImpl implements LocaleService, BundleContextAware {
         return result;
     }
 
-    @Override
-    public Map<String, String> getMessages(HttpServletRequest request, Bundle bundle) {
-        return dataFromModuleRegistrationData(request, bundle);
-    }
-
     private Map<String, String> dataFromModuleRegistrationData(HttpServletRequest request, Bundle bundle) {
 
         Map<String, String> result = new HashMap<>();

@@ -22,5 +22,4 @@ public interface LocaleService {
 
     Map<String, String> getMessages(HttpServletRequest request);
 
-    Map<String, String> getMessages(HttpServletRequest request, Bundle bundle);
 }
